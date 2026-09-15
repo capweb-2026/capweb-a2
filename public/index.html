@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cap Web — Tuteur Git pour débutants</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header>
+    <h1>Cap Web</h1>
+    <p>Tuteur Git pour débutants — thème A2, famille Apprendre.</p>
+    <p>Découvrez les commandes, les erreurs fréquentes et les bonnes pratiques de commit. Écrivez aide pour commencer.</p>
+  </header>
+  <main>
+    <section aria-labelledby="titre-chat">
+      <h2 id="titre-chat">Discussion</h2>
+      <ul id="messages" aria-label="Messages" aria-live="polite"></ul>
+      <form id="chat-form">
+        <label for="message">Votre message (280 caractères maximum)</label>
+        <textarea id="message" name="message" rows="3" required maxlength="280" placeholder="Ex. : git status, commit, bonnes pratiques"></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+      <button type="button" id="effacer">Effacer la conversation</button>
+      <p id="status" role="status"></p>
+    </section>
+  </main>
+  <footer>
+    <span id="version">version en attente</span>
+  </footer>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
