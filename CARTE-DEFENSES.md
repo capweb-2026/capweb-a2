@@ -4,7 +4,7 @@ Chaque ligne dit quelle connerie est arrêtée, par quoi, et **où est la preuve
 
 | Connerie | Barrière qui l'arrête | Preuve (lien) | Checkpoint |
 |---|---|---|---|
-| Régression | Tests de contrat et CI obligatoire sur `main` | | CP1 |
+| Régression | Tests de contrat et CI obligatoire sur `main` | https://github.com/capweb-2026/capweb-a2/actions/runs/34945365591 : premier run sur main, 8 échecs à npm test ; public/js/brain.js absent et ressources du chatbot en 404. | CP1 |
 | Test affaibli ou supprimé | `check:tests` (TEST-CHANGE obligatoire) et relecture | | CP2 |
 | Dépendance ajoutée | `check:deps` et `dependances-autorisees.json` | | CP2 |
 | Secret exposé | | | CP3 |
