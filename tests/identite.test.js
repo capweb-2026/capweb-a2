@@ -23,8 +23,9 @@ describe('Identité — critères 1 à 4', () => {
   });
 
   it('refuse les noms de 1 et 21 caractères', () => {
-    assert.equal(validatePersona({ ...persona, nom: 'G' }).ok, false);
-    assert.equal(validatePersona({ ...persona, nom: 'G'.repeat(21) }).ok, false);
+    assert.equal(validatePersona({ ...persona, nom: 'G', accueil: 'Bonjour G' }).ok, false);
+    const nomLong = 'G'.repeat(21);
+    assert.equal(validatePersona({ ...persona, nom: nomLong, accueil: `Bonjour ${nomLong}` }).ok, false);
   });
 
   it('refuse du texte ou plusieurs emojis', () => {
