@@ -95,3 +95,15 @@ button:focus-visible {
 footer {
   color: #526078;
 }
+
+#suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#suggestions[hidden],
+#accueil[hidden] {
+  display: none;
+}

@@ -8,13 +8,15 @@
 </head>
 <body>
   <header>
-    <h1>Cap Web</h1>
+    <h1 id="assistant-name">GitDépart 🌱</h1>
     <p>Tuteur Git pour débutants — thème A2, famille Apprendre.</p>
     <p>Découvrez les commandes, les erreurs fréquentes et les bonnes pratiques de commit. Écrivez aide pour commencer.</p>
   </header>
   <main>
     <section aria-labelledby="titre-chat">
       <h2 id="titre-chat">Discussion</h2>
+      <p id="accueil"></p>
+      <div id="suggestions" aria-label="Questions suggérées"></div>
       <ul id="messages" aria-label="Messages" aria-live="polite"></ul>
       <form id="chat-form">
         <label for="message">Votre message (280 caractères maximum)</label>

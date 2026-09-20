@@ -1,4 +1,5 @@
 import { validateMessage, replyTo } from './brain.js';
+import { persona, validatePersona } from './persona.js';
 import { renderMessages } from './view.js';
 
 const formulaire = document.querySelector('#chat-form');
@@ -7,8 +8,35 @@ const liste = document.querySelector('#messages');
 const statut = document.querySelector('#status');
 const versionElt = document.querySelector('#version');
 const effacer = document.querySelector('#effacer');
+const titreNom = document.querySelector('#assistant-name');
+const accueil = document.querySelector('#accueil');
+const suggestions = document.querySelector('#suggestions');
 const historique = [];
 const cleHistorique = 'capweb.historique';
+
+function mettreAJourIdentite() {
+  const conversationVide = historique.length === 0;
+  accueil.hidden = !conversationVide;
+  suggestions.hidden = !conversationVide;
+}
+
+const validationPersona = validatePersona(persona);
+if (!validationPersona.ok) {
+  statut.textContent = validationPersona.erreurs.join(' ');
+}
+titreNom.textContent = `${persona.nom} ${persona.emoji}`;
+accueil.textContent = persona.accueil;
+const boutons = persona.suggestions.map((question) => {
+  const bouton = document.createElement('button');
+  bouton.type = 'button';
+  bouton.textContent = question;
+  bouton.addEventListener('click', () => {
+    champ.value = question;
+    champ.focus();
+  });
+  return bouton;
+});
+suggestions.replaceChildren(...boutons);
 
 // Une mémoire abîmée ne doit pas empêcher d'utiliser le formulaire.
 try {
@@ -21,16 +49,14 @@ try {
       (message.role === 'user' || message.role === 'assistant') &&
       typeof message.text === 'string'
     );
-    if (valide) {
-      historique.push(...messages);
-    } else {
-      statut.textContent = 'La sauvegarde est abîmée. La conversation repart à zéro.';
-    }
+    if (valide) historique.push(...messages);
+    else statut.textContent = 'La sauvegarde est abîmée. La conversation repart à zéro.';
   }
 } catch {
   statut.textContent = 'La mémoire est indisponible ou abîmée. La conversation repart à zéro.';
 }
-renderMessages(historique, liste);
+renderMessages(historique, liste, persona.nom);
+mettreAJourIdentite();
 
 formulaire.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -43,7 +69,8 @@ formulaire.addEventListener('submit', (event) => {
 
   historique.push({ role: 'user', text: resultat.value });
   historique.push({ role: 'assistant', text: replyTo(resultat.value) });
-  renderMessages(historique, liste);
+  renderMessages(historique, liste, persona.nom);
+  mettreAJourIdentite();
   champ.value = '';
   statut.textContent = '';
   champ.focus();
@@ -56,12 +83,10 @@ formulaire.addEventListener('submit', (event) => {
 });
 
 effacer.addEventListener('click', () => {
-  if (!confirm('Effacer toute la conversation ?')) {
-    return;
-  }
-
+  if (!confirm('Effacer toute la conversation ?')) return;
   historique.length = 0;
-  renderMessages(historique, liste);
+  renderMessages(historique, liste, persona.nom);
+  mettreAJourIdentite();
   statut.textContent = 'Conversation effacée.';
   try {
     localStorage.removeItem(cleHistorique);
@@ -71,7 +96,6 @@ effacer.addEventListener('click', () => {
   champ.focus();
 });
 
-// Version du serveur local, échec discret si indisponible.
 fetch('/version.json', { headers: { accept: 'application/json' } })
   .then((reponse) => (reponse.ok ? reponse.json() : null))
   .then((donnees) => {
